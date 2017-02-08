@@ -2,9 +2,6 @@
 module.exports = function (obj)
 {
   // to check the given obj is not an number
-  // if(obj.length != 4){
-  //   throw new Error ('length should be 4');
-  // }
   if(typeof obj !== 'number')
   {
     throw new Error('Not a number');
@@ -15,29 +12,26 @@ module.exports = function (obj)
    const fs = require('fs');
    const rl = require('readline');
    // creating an interface to read file
-   const rd = rl.createInterface({
+const rd = rl.createInterface({
     input: fs.createReadStream('../inputdata/Indicators.csv'),
     output: process.stdout,
     terminal: false
 });
- let arr1 = [];
- let rural;
- // line event called and split the data
- rd.on('line', function(data) {
-    let linearr = data.split(',');
-    if(linearr[1] === 'IND' && linearr[3] === 'SP.RUR.TOTL.ZS')
-    {
-      rural = linearr[5];
-    }
-    if(linearr[1] === 'IND' && linearr[3] === 'SP.URB.TOTL.IN.ZS')
-    {
-        arr1.push({Year: linearr[4], Rural: rural, Urban: linearr[5]});
-      }
-});
 
-   // close event called
+let arr2 = [];
+// line event called and split the data
+rd.on('line', function(data) {
+    let linearr = data.split(',');
+      if(linearr[1] === 'IND' && linearr[3] === 'SP.URB.GROW')
+    {
+    arr2.push({' year ': linearr[4], 'Urban population growth (annual %)': linearr[5]});
+    }
+});
+// close event called
 rd.on('close', function() {
-  fs.writeFile('../outputdata/final3.json', JSON.stringify(arr1));
+//   logger.debug(arr2.length);
+      fs.writeFile('../outputdata/outputJsonS2.json', JSON.stringify(arr2));
+  //  logger.debug('Done');
 });
 }
 };
